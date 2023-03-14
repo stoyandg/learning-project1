@@ -21,3 +21,7 @@ variable "availability_zones" {
     default = ["us-west-2a", "us-west-2b", "us-west-2c"]
 }
 
+variable "route_cidr_block" {
+    description = "The CIDR block for the public and private route tables"
+    default = "0.0.0.0/0"
+}
