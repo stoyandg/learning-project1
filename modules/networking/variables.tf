@@ -1,3 +1,7 @@
+variable "app-name" {}
+
+variable "id_of_vpc" {}
+
 variable "cidr" {
     description = "The CIDR block for the VPC"
     default = "10.0.0.0/16"

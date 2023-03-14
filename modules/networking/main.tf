@@ -1,6 +1,3 @@
-variable "app-name" {}
-variable "id_of_vpc" {}
-
 data "aws_availability_zones" "available" {}
 
 # Creates a VPC
