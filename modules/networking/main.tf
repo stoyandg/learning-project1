@@ -37,6 +37,18 @@ resource "aws_subnet" "private_subnets" {
     }
 }
 
+# Creates DB Subnet group
+resource "aws_db_subnet_group" "db_subnets" {
+    name = "${var.app-name}-db-subnets"
+
+    subnet_ids = flatten([aws_subnet.private_subnets.*.id])
+
+    tags = {
+        Name = "${var.app-name}-DB-Subnet-Group"
+    }
+
+}
+
 # Creates an Internet Gateway in the VPC
 resource "aws_internet_gateway" "ig" {
     vpc_id = var.id_of_vpc

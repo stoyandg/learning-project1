@@ -1,0 +1,10 @@
+variable "app-name" {}
+
+variable "id_of_vpc" {}
+
+variable "master_password" {}
+
+variable "vpc_private_security_group_ids" {}
+
+variable "both_db_subnets_name" {}
+

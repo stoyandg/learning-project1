@@ -29,3 +29,5 @@ variable "route_cidr_block" {
     description = "The CIDR block for the public and private route tables"
     default = "0.0.0.0/0"
 }
+
+variable "both_private_subnets_id" {}

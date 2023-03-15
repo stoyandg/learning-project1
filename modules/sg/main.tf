@@ -1,3 +1,5 @@
+
+# Creates a Security Group for the instances in the public subnet.
 resource "aws_security_group" "Security_Group_Public" {
     name = "${var.app-name}-Public-Subnets-Security-Group"
     description = "Allows all incoming traffic and outgoing traffic for the specified ports"
@@ -20,8 +22,10 @@ resource "aws_security_group" "Security_Group_Public" {
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
+
 }
 
+# Creates a Security Group for the instances in the private subnet.
 resource "aws_security_group" "Security_Group_Private" {
     name = "${var.app-name}-Private-Subnets-Security-Group"
     description = "Allows incoming traffic only from instances in the public subnet and all outgoing traffic"
@@ -41,4 +45,5 @@ resource "aws_security_group" "Security_Group_Private" {
         protocol = "-1"
         cidr_blocks = ["0.0.0.0/0"]
     }
+
 }
