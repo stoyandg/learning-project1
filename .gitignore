@@ -13,6 +13,7 @@ crash.log
 # version control.
 #
 *.tfvars
+/packer/bastion/scripts/*.pem
 *.pem
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
