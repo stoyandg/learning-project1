@@ -9,7 +9,7 @@ data "aws_ami" "latest_amazon_linux" {
 
 resource "aws_launch_configuration" "apache-configuration"  {
     name_prefix = "${var.app-name}-apache-configuration"
-    image_id = "ami-0d67b65cdac5ecbc1"
+    image_id = "ami-0eeadbe6c1fb1a9c5"
     instance_type = "t2.micro"
     security_groups = var.vpc_public_security_group_ids
     iam_instance_profile = aws_iam_instance_profile.ec2-to-aurora-profile.name

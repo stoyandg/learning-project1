@@ -42,3 +42,14 @@ module "apache" {
 
     depends_on = [module.db.db_instance]
 }
+
+module "bastion" {
+    source = "./modules/bastion"
+
+    app-name = var.app-name
+    id_of_vpc = module.networking.id_of_vpc
+    both_public_subnets_id = module.networking.both_public_subnets_id
+    vpc_public_security_group_ids = [module.sg.vpc_public_security_group_ids]
+
+    depends_on = [module.apache.apache-autoscaling]
+}
