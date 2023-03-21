@@ -47,3 +47,26 @@ resource "aws_security_group" "Security_Group_Private" {
     }
 
 }
+
+# Creates a Security Group for the Bastion host load balancer.
+resource "aws_security_group" "Security_Group_Bastion" {
+    name = "${var.app-name}-Bastion-Host-Security-Group"
+    description = "Allows incoming traffic only from specific IPs and all outgoing traffic"
+
+    vpc_id = var.id_of_vpc
+    ingress {
+        description = "Traffic from Specific IP"
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["79.100.216.0/24"]
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+}

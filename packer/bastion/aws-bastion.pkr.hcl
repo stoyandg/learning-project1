@@ -42,7 +42,7 @@ build {
   provisioner "shell" {
     inline = [
       "sudo yum update -y",
-      "sudo amazon-linux-extras install -y php7.2"
+      "sudo hostnamectl set-hostname bastion-machine"
     ]
   }
 
@@ -50,11 +50,5 @@ build {
     source      = "./scripts/learning-project1-keypair.pem"
     destination = "~/.ssh/"
   }
-
-  provisioner "shell" {
-    inline = [
-      "cp /tmp/test.php /var/www/html/",
-      "sudo hostnamectl set-hostname apache-machine"
-    ]
-  }
+  
 }

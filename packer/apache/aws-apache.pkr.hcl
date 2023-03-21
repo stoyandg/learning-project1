@@ -57,12 +57,12 @@ build {
     destination = "/tmp/"
   }
 
+
   provisioner "shell" {
     inline = [
       "cp /tmp/test.php /var/www/html/",
       "sudo systemctl enable httpd",
-      "sudo systemctl start httpd",
-      "sudo hostnamectl set-hostname apache-machine"
+      "sudo systemctl start httpd"
     ]
   }
 }

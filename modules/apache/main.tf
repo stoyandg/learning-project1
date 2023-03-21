@@ -1,27 +1,47 @@
-data "aws_ami" "latest_amazon_linux" {
-    owners = ["amazon"]
-    most_recent = true
-    filter {
-        name = "name"
-        values = ["amzn2-ami-kernel-5.10-hvm-*-x86_64-gp2"]
+resource "aws_launch_template" "apache-template" {
+  name_prefix = "${var.app-name}-apache-template"
+
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = 8
+      volume_type = "gp2"
+      delete_on_termination = true
     }
+  }
+
+  vpc_security_group_ids = var.vpc_private_security_group_ids
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2-to-aurora-profile.name
+  }
+
+  image_id = "ami-05225e37bde85c263"
+  instance_type = "t2.micro"
+  key_name = "learning-project1-key-pair"
+
+  user_data = "${base64encode(<<EOF
+#!/bin/bash
+hostnamectl set-hostname apache
+EOF
+)}"
 }
 
-resource "aws_launch_configuration" "apache-configuration"  {
-    name_prefix = "${var.app-name}-apache-configuration"
-    image_id = "ami-0eeadbe6c1fb1a9c5"
-    instance_type = "t2.micro"
-    security_groups = var.vpc_public_security_group_ids
-    iam_instance_profile = aws_iam_instance_profile.ec2-to-aurora-profile.name
-    key_name = "learning-project1-key-pair"
-}
+
 
 resource "aws_autoscaling_group" "apache-autoscaling" {
     name = "${var.app-name}-apache-autoscaling"
-    launch_configuration = aws_launch_configuration.apache-configuration.id
+    launch_template {
+        id = aws_launch_template.apache-template.id
+    }
     desired_capacity = 3
     max_size = 3
     min_size = 3
 
-    vpc_zone_identifier = var.both_public_subnets_id
+    health_check_type = "EC2"
+    target_group_arns = [
+        aws_lb_target_group.apache-lb-tg.id
+    ]
+
+    vpc_zone_identifier = var.both_private_subnets_id
 }
