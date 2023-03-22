@@ -41,8 +41,7 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo yum update -y",
-      "sudo hostnamectl set-hostname bastion-machine"
+      "sudo yum update -y"
     ]
   }
 

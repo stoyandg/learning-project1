@@ -38,7 +38,7 @@ resource "aws_lb_target_group" "apache-lb-tg" {
 
 }
 
-resource "aws_autoscaling_attachment" "asg_attachment_bar" {
+resource "aws_autoscaling_attachment" "asg_attachment_apache" {
   autoscaling_group_name = aws_autoscaling_group.apache-autoscaling.id
   lb_target_group_arn    = aws_lb_target_group.apache-lb-tg.arn
 }
