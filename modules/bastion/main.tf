@@ -32,9 +32,9 @@ resource "aws_autoscaling_group" "bastion-autoscaling" {
     min_size = 1
 
     health_check_type = "EC2"
-    #target_group_arns = [
-    #    aws_lb_target_group.bastion-lb-tg.id
-    #]
+    target_group_arns = [
+        aws_lb_target_group.bastion-lb-tg.id
+    ]
 
     vpc_zone_identifier = var.both_public_subnets_id
 }

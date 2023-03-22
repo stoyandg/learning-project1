@@ -31,3 +31,8 @@ variable "route_cidr_block" {
 }
 
 variable "both_private_subnets_id" {}
+
+variable "just_count" {
+    description = "A variable for the amount of resources that need to be created"
+    default = 3
+}
