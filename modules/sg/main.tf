@@ -6,6 +6,13 @@ resource "aws_security_group" "Security_Group_Public" {
 
     vpc_id = var.id_of_vpc
 
+     ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["79.100.216.36/32"]
+    }
+
     dynamic "ingress" {
         for_each = var.allowed_ports_public
         content {
@@ -15,7 +22,6 @@ resource "aws_security_group" "Security_Group_Public" {
             cidr_blocks = ["0.0.0.0/0"]
         }
     }
-
     egress {
         from_port = 0
         to_port = 0
@@ -37,29 +43,6 @@ resource "aws_security_group" "Security_Group_Private" {
         to_port = 0
         protocol = "-1"
         security_groups = var.vpc_public_security_group_ids
-    }
-
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-}
-
-# Creates a Security Group for the Bastion host load balancer.
-resource "aws_security_group" "Security_Group_Bastion" {
-    name = "${var.app-name}-Bastion-Host-Security-Group"
-    description = "Allows incoming traffic only from specific IPs and all outgoing traffic"
-
-    vpc_id = var.id_of_vpc
-    ingress {
-        description = "Traffic from Specific IP"
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["79.100.216.0/24"]
     }
 
     egress {
