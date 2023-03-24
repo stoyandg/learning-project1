@@ -11,7 +11,7 @@ resource "aws_launch_template" "bastion-template"  {
     }
 
     vpc_security_group_ids = var.vpc_public_security_group_ids
-    image_id = "ami-08f90198fba6d622d"
+    image_id = "ami-051270933c06fc174"
     instance_type = "t2.micro"
     key_name = "learning-project1-key-pair"
 

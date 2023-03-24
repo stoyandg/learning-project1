@@ -36,13 +36,25 @@ source "amazon-ebs" "prometheus" {
 }
 build {
   sources = [
-    "source.amazon-ebs.bastion"
+    "source.amazon-ebs.prometheus"
   ]
 
-  provisioner "shell" {
+
+    provisioner "file" {
+    source      = "./scripts/"
+    destination = "/tmp/"
+  }
+
+    provisioner "shell" {
     inline = [
-      "sudo yum update -y"
+      "sudo yum update -y",
+      "sudo cp /tmp/prometheus.repo /etc/yum.repos.d/",
+      "sudo yum -y install prometheus2 node_exporter",
+      "sudo rm -f /etc/prometheus/prometheus.yml",
+      "sudo cp /tmp/prometheus.yml /etc/prometheus/",
+      "sudo systemctl enable prometheus node_exporter",
+      "sudo systemctl restart prometheus node_exporter",
+      "sudo rm -f /tmp/prometheus.repo /tmp/prometheus.yml"
     ]
   }
-  
 }

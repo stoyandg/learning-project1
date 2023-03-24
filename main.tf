@@ -16,6 +16,7 @@ module "sg" {
     app-name = var.app-name
     id_of_vpc = module.networking.id_of_vpc
     vpc_public_security_group_ids = [module.sg.vpc_public_security_group_ids]
+    vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
 }
 
 module "db" {
@@ -59,5 +60,5 @@ module "prometheus" {
     app-name = var.app-name
     id_of_vpc = module.networking.id_of_vpc
     both_public_subnets_id = module.networking.both_public_subnets_id
-    vpc_public_security_group_ids = [module.sg.vpc_public_security_group_ids]
+    vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
 }
