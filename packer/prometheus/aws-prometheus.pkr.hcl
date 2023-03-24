@@ -44,10 +44,5 @@ build {
       "sudo yum update -y"
     ]
   }
-
-  provisioner "file" {
-    source      = "./scripts/learning-project1-keypair.pem"
-    destination = "~/.ssh/"
-  }
   
 }

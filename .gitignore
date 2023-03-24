@@ -15,6 +15,7 @@ crash.log
 *.tfvars
 /packer/bastion/scripts/*.pem
 *.pem
+/packer/prometheus/scripts/prometheus.yml
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf

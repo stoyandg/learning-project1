@@ -52,3 +52,12 @@ module "bastion" {
 
     depends_on = [module.apache.apache-autoscaling]
 }
+
+module "prometheus" {
+    source = "./modules/prometheus"
+
+    app-name = var.app-name
+    id_of_vpc = module.networking.id_of_vpc
+    both_public_subnets_id = module.networking.both_public_subnets_id
+    vpc_public_security_group_ids = [module.sg.vpc_public_security_group_ids]
+}
