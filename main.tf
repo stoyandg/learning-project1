@@ -62,3 +62,9 @@ module "prometheus" {
     both_public_subnets_id = module.networking.both_public_subnets_id
     vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
 }
+
+module "grafana" {
+    source = "./modules/grafana"
+
+    prometheus_public_ip = module.prometheus.prometheus_public_ip
+}

@@ -1,5 +1,5 @@
 resource "aws_instance" "prometheus" {
-    ami = "ami-05e0356f34a194400"
+    ami = "ami-07165ef812e00b2a9"
     instance_type = var.instance_type
     availability_zone = var.az
     associate_public_ip_address = true
