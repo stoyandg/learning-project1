@@ -16,7 +16,7 @@ resource "aws_launch_template" "apache-template" {
     name = aws_iam_instance_profile.ec2-to-aurora-profile.name
   }
 
-  image_id = "ami-0f1283a9dc4b95c53"
+  image_id = "ami-0a8b8f320c122619d"
   instance_type = "t2.micro"
   key_name = "learning-project1-key-pair"
 

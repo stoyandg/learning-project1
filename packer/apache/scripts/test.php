@@ -10,5 +10,8 @@ $conn = mysqli_connect($servername, $username, $password);
 if (!$conn) {
   die("Connection failed: " . mysqli_connect_error());
 }
-echo "Connected successfully";
+
+$ec2_hostname = gethostname();
+
+echo "APP is successfully connected to " . $servername . " from " . $ec2_hostname;
 ?>

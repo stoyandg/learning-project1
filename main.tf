@@ -2,6 +2,14 @@ provider "aws" {
     region = var.region
 }
 
+terraform {
+  required_providers {
+    grafana = {
+      source = "grafana/grafana"
+      version = "1.36.1"
+    }
+  }
+}
 module "networking" {
     source = "./modules/networking"
 
@@ -17,6 +25,7 @@ module "sg" {
     id_of_vpc = module.networking.id_of_vpc
     vpc_public_security_group_ids = [module.sg.vpc_public_security_group_ids]
     vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
+    vpc_private_security_group_ids = [module.sg.vpc_private_security_group_ids]
 }
 
 module "db" {
@@ -24,7 +33,7 @@ module "db" {
 
     app-name = var.app-name
     id_of_vpc = module.networking.id_of_vpc
-    vpc_private_security_group_ids = [module.sg.vpc_private_security_group_ids]
+    vpc_rds_security_group_ids = [module.sg.vpc_rds_security_group_ids]
     both_db_subnets_name = module.networking.both_db_subnets_name
     master_password = var.master_password
     depends_on = [module.networking.db_subnets]
@@ -67,4 +76,8 @@ module "grafana" {
     source = "./modules/grafana"
 
     prometheus_public_ip = module.prometheus.prometheus_public_ip
+    app-name = var.app-name
+    id_of_vpc = module.networking.id_of_vpc
+    both_public_subnets_id = module.networking.both_public_subnets_id
+    vpc_grafana_security_group_ids = [module.sg.vpc_grafana_security_group_ids]
 }

@@ -14,6 +14,10 @@ variable "vpc_public_security_group_ids" {
     type = set(string)
 }
 
+variable "vpc_private_security_group_ids" {
+    type = set(string)
+}
+
 variable "vpc_prometheus_security_group_ids" {
     type = set(string)
 }

@@ -16,7 +16,7 @@ crash.log
 /packer/bastion/scripts/*.pem
 *.pem
 /packer/prometheus/scripts/prometheus.yml
-/modules/grafana/cloud-stack.tf
+/modules/grafana/main.tf
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf

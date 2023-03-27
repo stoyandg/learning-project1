@@ -4,7 +4,7 @@ resource "aws_rds_cluster" "db_cluster" {
     engine = "aurora"
     database_name = "dbname"
     db_subnet_group_name = var.both_db_subnets_name
-    vpc_security_group_ids = var.vpc_private_security_group_ids
+    vpc_security_group_ids = var.vpc_rds_security_group_ids
     master_username = "stoyandg"
     master_password = "${var.master_password}"
     skip_final_snapshot = true

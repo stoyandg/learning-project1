@@ -13,8 +13,8 @@ variable "app-name" {
   default = "learning-project1-app"
 }
 
-source "amazon-ebs" "apache" {
-  ami_name      = "packer-apache-${var.app-name}"
+source "amazon-ebs" "grafana" {
+  ami_name      = "packer-grafana-${var.app-name}"
   instance_type = var.instance_type
   region        = var.region
   source_ami_filter {
@@ -28,7 +28,7 @@ source "amazon-ebs" "apache" {
   }
   ssh_username = "ec2-user"
   tags = {
-    "Name"       = "MyApacheImage"
+    "Name"       = "MyGrafanaImage"
     "OS_Version" = "Amazon Linux 2"
     "Release"    = "Latest"
     "Created-by" = "Packer"
@@ -36,47 +36,29 @@ source "amazon-ebs" "apache" {
 }
 build {
   sources = [
-    "source.amazon-ebs.apache"
+    "source.amazon-ebs.grafana"
   ]
 
-  provisioner "shell" {
-    inline = [
-      "sudo yum update -y",
-      "sudo amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2",
-      "sudo yum install -y httpd mariadb-server",
-      "sudo usermod -a -G apache ec2-user",
-      "sudo chown -R ec2-user:apache /var/www",
-      "sudo chmod 2775 /var/www",
-      "find /var/www -type d -exec sudo chmod 2775 {} \\;",
-      "find /var/www -type f -exec sudo chmod 0664 {} \\;"
-    ]
-  }
-
-  provisioner "file" {
-    source      = "./scripts/test.php"
-    destination = "/tmp/"
-  }
 
     provisioner "file" {
-    source = "./scripts/node-exporter.service"
+    source      = "./scripts/"
     destination = "/tmp/"
   }
 
-
-  provisioner "shell" {
+    provisioner "shell" {
     inline = [
-      "sudo cp /tmp/test.php /var/www/html/",
-      "sudo systemctl enable httpd",
-      "sudo systemctl start httpd",
+      "sudo yum update -y",
       "sudo mv /tmp/node-exporter.service /etc/systemd/system/",
       "sudo useradd --no-create-home node_exporter",
       "wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz",
       "tar xzf node_exporter-1.0.1.linux-amd64.tar.gz",
       "sudo cp node_exporter-1.0.1.linux-amd64/node_exporter /usr/local/bin/node_exporter",
       "rm -rf node_exporter-1.0.1.linux-amd64.tar.gz node_exporter-1.0.1.linux-amd64",
+      "sudo cp /tmp/grafana.repo /etc/yum.repos.d/",
+      "sudo yum -y install grafana",
       "sudo systemctl daemon-reload",
-      "sudo systemctl enable node-exporter",
-      "sudo systemctl start node-exporter"
+      "sudo systemctl enable grafana-server.service node-exporter",
+      "sudo systemctl restart grafana-server node-exporter"
     ]
   }
 }
