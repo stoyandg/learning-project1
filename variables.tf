@@ -1,11 +1,11 @@
 variable "region" {
-    type = string
-    default = ""
+  type    = string
+  default = ""
 }
 
 variable "app-name" {
-    type = string
-    default = ""
+  type    = string
+  default = ""
 }
 
 variable "master_password" {}

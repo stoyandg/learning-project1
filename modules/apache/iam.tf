@@ -1,5 +1,5 @@
 data "aws_iam_policy" "ec2-to-aurora-policy" {
-    arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+  arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
 
 resource "aws_iam_role" "ec2-to-aurora-role" {
@@ -25,6 +25,6 @@ resource "aws_iam_role_policy_attachment" "ec2-to-aurora-policy-attachment" {
 }
 
 resource "aws_iam_instance_profile" "ec2-to-aurora-profile" {
-    name = "${var.app-name}-ec2-to-aurora-profile"
-    role = aws_iam_role.ec2-to-aurora-role.name
+  name = "${var.app-name}-ec2-to-aurora-profile"
+  role = aws_iam_role.ec2-to-aurora-role.name
 }
