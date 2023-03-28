@@ -17,6 +17,7 @@ crash.log
 *.pem
 /packer/prometheus/scripts/prometheus.yml
 /modules/grafana/main.tf
+/modules/grafana/terraform.tfvars
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
 override.tf
