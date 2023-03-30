@@ -13,6 +13,7 @@ crash.log
 # version control.
 #
 .DS_Store
+.idea
 *.tfvars
 /packer/bastion/scripts/*.pem
 *.pem
