@@ -12,7 +12,7 @@ resource "aws_instance" "grafana" {
   instance_type          = var.instance_type
   availability_zone      = var.az
   vpc_security_group_ids = var.vpc_grafana_security_group_ids
-  subnet_id              = element(var.both_public_subnets_id, 0)
+  subnet_id              = element(var.public_subnets_id, 0)
   key_name               = "learning-project1-key-pair"
   user_data = (base64encode(<<EOF
 #!/bin/bash

@@ -2,11 +2,11 @@ variable "prometheus_public_ip" {}
 
 variable "app-name" {}
 
-variable "id_of_vpc" {}
+variable "vpc_id" {}
 
 variable "vpc_grafana_security_group_ids" {}
 
-variable "both_public_subnets_id" {}
+variable "public_subnets_id" {}
 
 variable "auth" {
   type    = string

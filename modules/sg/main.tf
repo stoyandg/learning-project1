@@ -4,7 +4,7 @@ resource "aws_security_group" "Security_Group_Public" {
   name        = "${var.app-name}-Public-Subnets-Security-Group"
   description = "Allows all incoming traffic and outgoing traffic for the specified ports"
 
-  vpc_id = var.id_of_vpc
+  vpc_id = var.vpc_id
 
   ingress {
     from_port   = 22
@@ -35,7 +35,7 @@ resource "aws_security_group" "Security_Group_Private" {
   name        = "${var.app-name}-Private-Subnets-Security-Group"
   description = "Allows incoming traffic only from instances in the public subnet and all outgoing traffic"
 
-  vpc_id = var.id_of_vpc
+  vpc_id = var.vpc_id
   ingress {
     description     = "Traffic from Public Subnet"
     from_port       = 0
@@ -64,7 +64,7 @@ resource "aws_security_group" "Security_Group_Prometheus" {
   name        = "${var.app-name}-Prometheus-Security-Group"
   description = "Allows incoming traffic on all Prometheus ports"
 
-  vpc_id = var.id_of_vpc
+  vpc_id = var.vpc_id
 
   dynamic "ingress" {
     for_each = var.allowed_ports_prometheus
@@ -87,7 +87,7 @@ resource "aws_security_group" "Security_Group_Prometheus" {
 resource "aws_security_group" "Security_Group_Grafana" {
   name = "${var.app-name}-Grafana-Security-Group"
 
-  vpc_id = var.id_of_vpc
+  vpc_id = var.vpc_id
 
   ingress {
     from_port       = 22
@@ -125,7 +125,7 @@ resource "aws_security_group" "Security_Group_RDS" {
   name        = "${var.app-name}-RDS-Security-Group"
   description = "Allows incoming traffic only from instances in the private subnet and all outgoing traffic"
 
-  vpc_id = var.id_of_vpc
+  vpc_id = var.vpc_id
   ingress {
     description     = "Traffic from Public Subnet"
     from_port       = 0

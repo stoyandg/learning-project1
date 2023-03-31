@@ -1,5 +1,3 @@
-data "aws_availability_zones" "available" {}
-
 # Creates a VPC
 resource "aws_vpc" "vpc" {
     cidr_block = var.cidr
@@ -9,11 +7,11 @@ resource "aws_vpc" "vpc" {
     }
 }
 
-# Creates 3 public subnets in the VPC"
+# Creates public subnets in the VPC"
 resource "aws_subnet" "public_subnets" {
     count = length(var.public_subnets_list)
 
-    vpc_id = var.id_of_vpc
+    vpc_id = aws_vpc.vpc.id
     map_public_ip_on_launch = true
     cidr_block = var.public_subnets_list[count.index]
     availability_zone = var.availability_zones[count.index]
@@ -23,11 +21,11 @@ resource "aws_subnet" "public_subnets" {
     }
 }
 
-# Creates 3 private subnets in the VPC
+# Creates private subnets in the VPC
 resource "aws_subnet" "private_subnets" {
     count = length(var.private_subnets_list)
 
-    vpc_id = var.id_of_vpc
+    vpc_id = aws_vpc.vpc.id
     map_public_ip_on_launch = true
     cidr_block = var.private_subnets_list[count.index]
     availability_zone = var.availability_zones[count.index]
@@ -39,6 +37,7 @@ resource "aws_subnet" "private_subnets" {
 
 # Creates DB Subnet group
 resource "aws_db_subnet_group" "db_subnets" {
+    count = var.enable_db_subnets ? 1 : 0
     name = "${var.app-name}-db-subnets"
 
     subnet_ids = flatten([aws_subnet.private_subnets.*.id])
@@ -51,7 +50,7 @@ resource "aws_db_subnet_group" "db_subnets" {
 
 # Creates an Internet Gateway in the VPC
 resource "aws_internet_gateway" "ig" {
-    vpc_id = var.id_of_vpc
+    vpc_id = aws_vpc.vpc.id
 
     tags = {
         Name = "${var.app-name}-Internet-Gateway"
@@ -80,7 +79,7 @@ resource "aws_eip" "elastic_ip" {
 
 # Creates a public route table in the VPC
 resource "aws_route_table" "public_routetable" {
-    vpc_id = var.id_of_vpc
+    vpc_id = aws_vpc.vpc.id
 
     route {
         cidr_block = var.route_cidr_block
@@ -99,7 +98,7 @@ resource "aws_route_table" "public_routetable" {
 # Creates a private route table in the VPC
 resource "aws_route_table" "private_routetable" {
   count = var.just_count
-  vpc_id = var.id_of_vpc
+  vpc_id = aws_vpc.vpc.id
 
   route {
     cidr_block = var.route_cidr_block

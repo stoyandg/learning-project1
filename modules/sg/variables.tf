@@ -24,4 +24,4 @@ variable "vpc_prometheus_security_group_ids" {
 
 variable "app-name" {}
 
-variable "id_of_vpc" {}
+variable "vpc_id" {}

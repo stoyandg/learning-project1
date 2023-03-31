@@ -1,5 +1,5 @@
 resource "aws_lb" "network_loadbalancer" {
-  count              = var.enable_network_load_balancer ? [1] : []
+  count              = var.enable_network_load_balancer ? 1 : 0
   name               = var.name
   internal           = var.internal_load_balancer
   load_balancer_type = "network"
@@ -15,7 +15,7 @@ resource "aws_lb" "network_loadbalancer" {
 }
 
 resource "aws_lb_listener" "network_loadbalancer_listener" {
-  count             = var.enable_network_load_balancer ? [1] : []
+  count             = var.enable_network_load_balancer ? 1 : 0
   load_balancer_arn = aws_lb.network_loadbalancer[0].id
   port              = var.loadbalancer_port
   protocol          = "TCP"
@@ -27,7 +27,7 @@ resource "aws_lb_listener" "network_loadbalancer_listener" {
 }
 
 resource "aws_lb" "application_loadbalancer" {
-  count              = var.enable_application_load_balancer ? [1] : []
+  count              = var.enable_application_load_balancer ? 1 : 0
   name               = var.name
   internal           = var.internal_load_balancer
   load_balancer_type = "application"
@@ -36,7 +36,7 @@ resource "aws_lb" "application_loadbalancer" {
 }
 
 resource "aws_lb_listener" "application_loadbalancer_listener" {
-  count             = var.enable_application_load_balancer ? [1] : []
+  count             = var.enable_application_load_balancer ? 1 : 0
   load_balancer_arn = aws_lb.application_loadbalancer[0].id
   port              = var.loadbalancer_port
   protocol          = "HTTP"
