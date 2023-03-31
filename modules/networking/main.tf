@@ -3,7 +3,7 @@ resource "aws_vpc" "vpc" {
     cidr_block = var.cidr
 
     tags = {
-        Name = "${var.app-name}-VPC"
+        Name = "${var.app_name}-VPC"
     }
 }
 
@@ -17,7 +17,7 @@ resource "aws_subnet" "public_subnets" {
     availability_zone = var.availability_zones[count.index]
 
     tags = {
-        Name = "${var.app-name}-Public-Subnet"
+        Name = "${var.app_name}-Public-Subnet"
     }
 }
 
@@ -31,19 +31,19 @@ resource "aws_subnet" "private_subnets" {
     availability_zone = var.availability_zones[count.index]
 
     tags = {
-        Name = "${var.app-name}-Private-Subnet"
+        Name = "${var.app_name}-Private-Subnet"
     }
 }
 
 # Creates DB Subnet group
 resource "aws_db_subnet_group" "db_subnets" {
     count = var.enable_db_subnets ? 1 : 0
-    name = "${var.app-name}-db-subnets"
+    name = "${var.app_name}-db-subnets"
 
     subnet_ids = flatten([aws_subnet.private_subnets.*.id])
 
     tags = {
-        Name = "${var.app-name}-DB-Subnet-Group"
+        Name = "${var.app_name}-DB-Subnet-Group"
     }
 
 }
@@ -53,7 +53,7 @@ resource "aws_internet_gateway" "ig" {
     vpc_id = aws_vpc.vpc.id
 
     tags = {
-        Name = "${var.app-name}-Internet-Gateway"
+        Name = "${var.app_name}-Internet-Gateway"
     }
 }
 
@@ -63,7 +63,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id = element(aws_subnet.public_subnets.*.id, count.index)
   allocation_id = element(aws_eip.elastic_ip.*.id, count.index)
   tags = {
-    Name = "${var.app-name}-NAT-Gateways"
+    Name = "${var.app_name}-NAT-Gateways"
   }
 }
 
@@ -73,7 +73,7 @@ resource "aws_eip" "elastic_ip" {
   vpc = true
   depends_on = [aws_internet_gateway.ig]
   tags = {
-    Name = "${var.app-name}-Elastic-IPs"
+    Name = "${var.app_name}-Elastic-IPs"
   }
 }
 
@@ -91,7 +91,7 @@ resource "aws_route_table" "public_routetable" {
     ]
 
     tags = {
-        Name = "${var.app-name}-Public-Route-Table"
+        Name = "${var.app_name}-Public-Route-Table"
     }
 }
 
@@ -107,7 +107,7 @@ resource "aws_route_table" "private_routetable" {
 
   depends_on = [aws_nat_gateway.nat]
   tags = {
-    Name = "${var.app-name}-Private-RouteTable"
+    Name = "${var.app_name}-Private-RouteTable"
   }
 }
 

@@ -1,19 +1,18 @@
 module "networking" {
   source = "./modules/networking"
 
-  app-name                = local.app-name
+  app_name                = local.app_name
   availability_zones      = ["us-west-2a", "us-west-2b", "us-west-2c"]
   cidr                    = "10.0.0.0/16"
   public_subnets_list     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnets_list    = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-  route_cidr_block        = "0.0.0.0/0"
   just_count = 3
   enable_db_subnets = true
 }
 
 module "db" {
   source                     = "./modules/db"
-  app-name                   = local.app-name
+  app_name                   = local.app_name
   availability_zones         = ["us-west-2a", "us-west-2b", "us-west-2c"]
   database_name              = "dbname"
   vpc_id                     = module.networking.vpc_id
@@ -62,7 +61,7 @@ module "apache" {
 module "sg" {
   source = "./modules/sg"
 
-  app-name                          = local.app-name
+  app_name                          = local.app_name
   vpc_id                         = module.networking.vpc_id
   vpc_public_security_group_ids     = [module.sg.vpc_public_security_group_ids]
   vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
@@ -72,7 +71,7 @@ module "sg" {
 module "prometheus" {
   source = "./modules/prometheus"
 
-  app-name                          = local.app-name
+  app_name                          = local.app_name
   vpc_id                         = module.networking.vpc_id
   public_subnets_id            = module.networking.public_subnets_id
   vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
@@ -82,7 +81,7 @@ module "grafana" {
   source = "./modules/grafana"
 
   prometheus_public_ip           = module.prometheus.prometheus_public_ip
-  app-name                       = local.app-name
+  app_name                       = local.app_name
   vpc_id                     = module.networking.vpc_id
   public_subnets_id         = module.networking.public_subnets_id
   vpc_grafana_security_group_ids = [module.sg.vpc_grafana_security_group_ids]

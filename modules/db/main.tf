@@ -1,5 +1,5 @@
 resource "aws_rds_cluster" "db_cluster" {
-  cluster_identifier     = "${var.app-name}-db-cluster"
+  cluster_identifier     = "${var.app_name}_db_cluster"
   availability_zones     = var.availability_zones
   engine                 = var.engine
   database_name          = var.database_name
@@ -13,7 +13,7 @@ resource "aws_rds_cluster" "db_cluster" {
 resource "aws_rds_cluster_instance" "db_instance" {
   count = 3
 
-  identifier           = "${var.app-name}-${var.engine}-cluster-${count.index}"
+  identifier           = "${var.app_name}-${var.engine}_cluster_${count.index}"
   cluster_identifier   = aws_rds_cluster.db_cluster.id
   instance_class       = var.instance_class
   engine               = aws_rds_cluster.db_cluster.engine

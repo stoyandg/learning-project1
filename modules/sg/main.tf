@@ -1,7 +1,7 @@
 
 # Creates a Security Group for the instances in the public subnet.
 resource "aws_security_group" "Security_Group_Public" {
-  name        = "${var.app-name}-Public-Subnets-Security-Group"
+  name        = "${var.app_name}_Public_Subnets_Security_Group"
   description = "Allows all incoming traffic and outgoing traffic for the specified ports"
 
   vpc_id = var.vpc_id
@@ -32,7 +32,7 @@ resource "aws_security_group" "Security_Group_Public" {
 
 # Creates a Security Group for the instances in the private subnet.
 resource "aws_security_group" "Security_Group_Private" {
-  name        = "${var.app-name}-Private-Subnets-Security-Group"
+  name        = "${var.app_name}_Private_Subnets_Security_Group"
   description = "Allows incoming traffic only from instances in the public subnet and all outgoing traffic"
 
   vpc_id = var.vpc_id
@@ -61,7 +61,7 @@ resource "aws_security_group" "Security_Group_Private" {
 }
 
 resource "aws_security_group" "Security_Group_Prometheus" {
-  name        = "${var.app-name}-Prometheus-Security-Group"
+  name        = "${var.app_name}_Prometheus_Security_Group"
   description = "Allows incoming traffic on all Prometheus ports"
 
   vpc_id = var.vpc_id
@@ -85,7 +85,7 @@ resource "aws_security_group" "Security_Group_Prometheus" {
 }
 
 resource "aws_security_group" "Security_Group_Grafana" {
-  name = "${var.app-name}-Grafana-Security-Group"
+  name = "${var.app_name}_Grafana_Security_Group"
 
   vpc_id = var.vpc_id
 
@@ -122,7 +122,7 @@ resource "aws_security_group" "Security_Group_Grafana" {
 
 # Creates a Security Group for the database instances.
 resource "aws_security_group" "Security_Group_RDS" {
-  name        = "${var.app-name}-RDS-Security-Group"
+  name        = "${var.app_name}_RDS_Security_Group"
   description = "Allows incoming traffic only from instances in the private subnet and all outgoing traffic"
 
   vpc_id = var.vpc_id

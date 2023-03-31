@@ -21,6 +21,7 @@ variable "availability_zones" {
 variable "route_cidr_block" {
     description = "The CIDR block for the public and private route tables"
     type = string
+    default = "0.0.0.0/0"
 }
 
 variable "just_count" {
@@ -34,7 +35,7 @@ variable "enable_db_subnets" {
     default = false
 }
 
-variable "app-name" {
+variable "app_name" {
     description = "A name for the resources to be provisioned"
     type = string
 }

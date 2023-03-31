@@ -1,6 +1,6 @@
 variable "prometheus_public_ip" {}
 
-variable "app-name" {}
+variable "app_name" {}
 
 variable "vpc_id" {}
 

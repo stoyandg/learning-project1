@@ -8,13 +8,13 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "app-name" {
+variable "app_name" {
   type    = string
   default = "learning-project1-app"
 }
 
 source "amazon-ebs" "apache" {
-  ami_name      = "packer-apache-${var.app-name}"
+  ami_name      = "packer_apache_${var.app_name}"
   instance_type = var.instance_type
   region        = var.region
   source_ami_filter {
