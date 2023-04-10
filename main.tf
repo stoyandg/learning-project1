@@ -24,6 +24,7 @@ module "db" {
   db_subnet_group            = module.networking.db_subnet_group
   master_username            = "stoyandg"
   master_password            = local.master_password
+  rds_cluster_instance_count = 3
   depends_on                 = [module.networking]
 }
 

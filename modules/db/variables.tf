@@ -37,3 +37,9 @@ variable "instance_class" {
   type        = string
   default     = "db.t3.small"
 }
+
+variable "rds_cluster_instance_count" {
+  description = "Sets the amount of AWS RDS Cluster instances to be created."
+  type = number
+  default = 1
+}

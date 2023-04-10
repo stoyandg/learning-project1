@@ -11,7 +11,7 @@ resource "aws_rds_cluster" "db_cluster" {
 }
 
 resource "aws_rds_cluster_instance" "db_instance" {
-  count = 3
+  count = var.rds_cluster_instance_count
 
   identifier           = "${var.app_name}-${var.engine}-cluster-${count.index}"
   cluster_identifier   = aws_rds_cluster.db_cluster.id
