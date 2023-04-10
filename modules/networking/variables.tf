@@ -24,11 +24,6 @@ variable "route_cidr_block" {
   default     = "0.0.0.0/0"
 }
 
-variable "just_count" {
-  description = "A variable for the amount of resources that need to be created"
-  type        = number
-}
-
 variable "enable_db_subnet_group" {
   description = "A variable whether to create a DB subnets group"
   type        = bool
