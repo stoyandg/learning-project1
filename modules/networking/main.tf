@@ -61,7 +61,7 @@ resource "aws_internet_gateway" "ig" {
 
 # Creates 3 NAT gateways in each of the public subnets
 resource "aws_nat_gateway" "nat" {
-  count         = var.just_count
+  count         = length(var.public_subnets_list)
   subnet_id     = element(aws_subnet.public_subnets.*.id, count.index)
   allocation_id = element(aws_eip.elastic_ip.*.id, count.index)
   tags = {
@@ -71,7 +71,7 @@ resource "aws_nat_gateway" "nat" {
 
 # Creates 3 Elastic IPs so the NAT gateways can have static IPs
 resource "aws_eip" "elastic_ip" {
-  count      = var.just_count
+  count      = length(var.public_subnets_list)
   vpc        = true
   depends_on = [aws_internet_gateway.ig]
   tags = {
@@ -99,7 +99,7 @@ resource "aws_route_table" "public_routetable" {
 
 # Creates a private route table in the VPC
 resource "aws_route_table" "private_routetable" {
-  count  = var.just_count
+  count  = length(var.public_subnets_list)
   vpc_id = aws_vpc.vpc.id
 
   route {
