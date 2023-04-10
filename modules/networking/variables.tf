@@ -29,7 +29,7 @@ variable "just_count" {
   type        = number
 }
 
-variable "enable_db_subnets" {
+variable "enable_db_subnet_group" {
   description = "A variable whether to create a DB subnets group"
   type        = bool
   default     = false

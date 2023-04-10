@@ -1,23 +1,27 @@
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "networking" {
   source = "./modules/networking"
 
   app_name             = local.app_name
-  availability_zones   = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  availability_zones   = slice(data.aws_availability_zones.available.names, 0, 3)
   cidr                 = "10.0.0.0/16"
   public_subnets_list  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnets_list = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
   just_count           = 3
-  enable_db_subnets    = true
+  enable_db_subnet_group    = true
 }
 
 module "db" {
   source                     = "./modules/db"
   app_name                   = local.app_name
-  availability_zones         = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  availability_zones         = slice(data.aws_availability_zones.available.names, 0, 3)
   database_name              = "dbname"
   vpc_id                     = module.networking.vpc_id
   vpc_rds_security_group_ids = [module.sg.vpc_rds_security_group_ids]
-  db_subnets_name            = module.networking.db_subnets_name
+  db_subnet_group            = module.networking.db_subnet_group
   master_username            = "stoyandg"
   master_password            = local.master_password
   depends_on                 = [module.networking]

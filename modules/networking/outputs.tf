@@ -10,6 +10,6 @@ output "private_subnets_id" {
   value = aws_subnet.private_subnets.*.id
 }
 
-output "db_subnets_name" {
-  value = var.enable_db_subnets ? aws_db_subnet_group.db_subnets[0].id : ""
+output "db_subnet_group" {
+  value = var.enable_db_subnet_group ? aws_db_subnet_group.db_subnets[0].id : ""
 }

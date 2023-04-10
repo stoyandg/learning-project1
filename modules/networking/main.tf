@@ -37,7 +37,7 @@ resource "aws_subnet" "private_subnets" {
 
 # Creates DB Subnet group
 resource "aws_db_subnet_group" "db_subnets" {
-  count = var.enable_db_subnets ? 1 : 0
+  count = var.enable_db_subnet_group ? 1 : 0
   name  = "${var.app_name}-db-subnets"
 
   subnet_ids = flatten([aws_subnet.private_subnets.*.id])

@@ -6,7 +6,10 @@ variable "master_password" {}
 
 variable "vpc_rds_security_group_ids" {}
 
-variable "db_subnets_name" {}
+variable "db_subnet_group" {
+  description = "A subnet group for the database instances"
+  type = string
+}
 
 variable "availability_zones" {
   description = "A list of availability zones in which the subnets will be created"
@@ -25,12 +28,12 @@ variable "engine" {
 }
 
 variable "database_name" {
-  description = "The engine that the database runs on"
+  description = "The name of the database"
   type        = string
 }
 
 variable "instance_class" {
-  description = "The engine that the database runs on"
+  description = "The instance class type for the database"
   type        = string
   default     = "db.t3.small"
 }
