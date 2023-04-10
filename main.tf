@@ -2,6 +2,15 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_secretsmanager_secret" "db_secret" {
+  arn = "arn:aws:secretsmanager:us-west-2:659808933566:secret:db-secret-J1Z9s0"
+}
+
+data "aws_secretsmanager_secret_version" "db_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.db_secret.id
+}
+
+
 module "networking" {
   source = "./modules/networking"
 
@@ -22,7 +31,7 @@ module "db" {
   vpc_rds_security_group_ids = [module.sg.vpc_rds_security_group_ids]
   db_subnet_group            = module.networking.db_subnet_group
   master_username            = "stoyandg"
-  master_password            = local.master_password
+  master_password            = jsondecode(data.aws_secretsmanager_secret_version.db_secret_version.secret_string)["password"]
   rds_cluster_instance_count = 3
   depends_on                 = [module.networking]
 }
