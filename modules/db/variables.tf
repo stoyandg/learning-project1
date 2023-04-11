@@ -8,7 +8,7 @@ variable "vpc_rds_security_group_ids" {}
 
 variable "db_subnet_group" {
   description = "A subnet group for the database instances"
-  type = string
+  type        = string
 }
 
 variable "availability_zones" {
@@ -40,6 +40,6 @@ variable "instance_class" {
 
 variable "rds_cluster_instance_count" {
   description = "Sets the amount of AWS RDS Cluster instances to be created."
-  type = number
-  default = 1
+  type        = number
+  default     = 1
 }
