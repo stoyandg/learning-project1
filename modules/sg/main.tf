@@ -10,7 +10,7 @@ resource "aws_security_group" "Security_Group_Public" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["79.100.216.36/32"]
+    cidr_blocks = ["77.76.30.121/32"]
   }
 
   dynamic "ingress" {
