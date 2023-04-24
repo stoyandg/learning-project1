@@ -2,6 +2,7 @@ resource "aws_rds_cluster" "db_cluster" {
   cluster_identifier     = "${var.app_name}-db-cluster"
   availability_zones     = var.availability_zones
   engine                 = var.engine
+  engine_mode            = "provisioned"
   database_name          = var.database_name
   db_subnet_group_name   = var.db_subnet_group
   vpc_security_group_ids = var.vpc_rds_security_group_ids

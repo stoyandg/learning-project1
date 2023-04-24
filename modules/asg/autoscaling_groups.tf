@@ -32,7 +32,7 @@ resource "aws_autoscaling_group" "autoscaling" {
 
   health_check_type = var.health_check_type
   target_group_arns = [
-    aws_lb_target_group.target_group.id
+    var.target_group_lb == "nlb" ? aws_lb_target_group.target_group_nlb.*.id : aws_lb_target_group.target_group_alb.*.id
   ]
 
   vpc_zone_identifier = var.autoscaling_group_subnet_ids

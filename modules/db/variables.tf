@@ -2,6 +2,8 @@ variable "app_name" {}
 
 variable "vpc_id" {}
 
+variable "master_username" {}
+
 variable "master_password" {}
 
 variable "vpc_rds_security_group_ids" {}
@@ -16,15 +18,10 @@ variable "availability_zones" {
   type        = list(any)
 }
 
-variable "master_username" {
-  description = "Username for the database"
-  type        = string
-}
-
 variable "engine" {
   description = "The engine that the database runs on"
   type        = string
-  default     = "aurora"
+  default     = "aurora-mysql"
 }
 
 variable "database_name" {
@@ -42,4 +39,10 @@ variable "rds_cluster_instance_count" {
   description = "Sets the amount of AWS RDS Cluster instances to be created."
   type        = number
   default     = 1
+}
+
+variable "engine_mode" {
+  description = "The mode of the engine of the database"
+  type        = string
+  default     = "provisioned"
 }

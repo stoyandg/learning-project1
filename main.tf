@@ -1,9 +1,15 @@
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
+#resource "aws_secretsmanager_secret" "db_secret" {
+#  name = "db-secret"
+#}
+
 data "aws_secretsmanager_secret" "db_secret" {
-  arn = "arn:aws:secretsmanager:us-west-2:659808933566:secret:db-secret-J1Z9s0"
+  name = "db-secret"
+  #arn = aws_secretsmanager_secret.db_secret.arn
 }
 
 data "aws_secretsmanager_secret_version" "db_secret_version" {
@@ -30,7 +36,7 @@ module "db" {
   vpc_id                     = module.networking.vpc_id
   vpc_rds_security_group_ids = [module.sg.vpc_rds_security_group_ids]
   db_subnet_group            = module.networking.db_subnet_group
-  master_username            = "stoyandg"
+  master_username            = jsondecode(data.aws_secretsmanager_secret_version.db_secret_version.secret_string)["username"]
   master_password            = jsondecode(data.aws_secretsmanager_secret_version.db_secret_version.secret_string)["password"]
   rds_cluster_instance_count = 3
   depends_on                 = [module.networking]
@@ -47,6 +53,7 @@ module "bastion" {
   loadbalancer_port            = 22
   health_check_port            = 22
   loadbalancer_subnet_ids      = module.networking.public_subnets_id
+  target_group_lb              = "nlb"
   autoscaling_group_subnet_ids = module.networking.public_subnets_id
   public_security_group_ids    = [module.sg.vpc_public_security_group_ids]
   vpc_id                       = module.networking.vpc_id
@@ -64,6 +71,7 @@ module "apache" {
   loadbalancer_port                = 80
   health_check_port                = 80
   loadbalancer_subnet_ids          = module.networking.public_subnets_id
+  target_group_lb                  = "alb"
   autoscaling_group_subnet_ids     = module.networking.private_subnets_id
   public_security_group_ids        = [module.sg.vpc_public_security_group_ids]
   vpc_id                           = module.networking.vpc_id

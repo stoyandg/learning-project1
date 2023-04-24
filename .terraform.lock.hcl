@@ -24,7 +24,8 @@ provider "registry.terraform.io/grafana/grafana" {
 }
 
 provider "registry.terraform.io/hashicorp/aws" {
-  version = "4.60.0"
+  version     = "4.60.0"
+  constraints = "4.60.0"
   hashes = [
     "h1:XxVhnhtrRW3YueabP668hVZ3qL4th7pcWbx+ot/l864=",
     "zh:1853d6bc89e289ac36c13485e8ff877c1be8485e22f545bb32c7a30f1d1856e8",

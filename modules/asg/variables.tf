@@ -127,3 +127,8 @@ variable "vpc_id" {
   description = "ID of VPC"
   type        = string
 }
+
+variable "target_group_lb" {
+  description = "Variable for NLB or ALB target group attachment"
+  type        = string
+}
