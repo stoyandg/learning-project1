@@ -76,11 +76,11 @@ resource "aws_lb_target_group" "target_group_alb" {
 resource "aws_autoscaling_attachment" "asg_attachment_nlb" {
   count                  = var.enable_network_load_balancer ? 1 : 0
   autoscaling_group_name = aws_autoscaling_group.autoscaling.id
-  lb_target_group_arn    = aws_lb_target_group.target_group_nlb
+  lb_target_group_arn    = aws_lb_target_group.target_group_nlb[0].arn
 }
 
 resource "aws_autoscaling_attachment" "asg_attachment_alb" {
   count                  = var.enable_application_load_balancer ? 1 : 0
   autoscaling_group_name = aws_autoscaling_group.autoscaling.id
-  lb_target_group_arn    = aws_lb_target_group.target_group_alb
+  lb_target_group_arn    = aws_lb_target_group.target_group_alb[0].arn
 }
