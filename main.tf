@@ -53,7 +53,6 @@ module "bastion" {
   loadbalancer_port            = 22
   health_check_port            = 22
   loadbalancer_subnet_ids      = module.networking.public_subnets_id
-  target_group_lb              = "nlb"
   autoscaling_group_subnet_ids = module.networking.public_subnets_id
   public_security_group_ids    = [module.sg.vpc_public_security_group_ids]
   vpc_id                       = module.networking.vpc_id
@@ -71,7 +70,6 @@ module "apache" {
   loadbalancer_port                = 80
   health_check_port                = 80
   loadbalancer_subnet_ids          = module.networking.public_subnets_id
-  target_group_lb                  = "alb"
   autoscaling_group_subnet_ids     = module.networking.private_subnets_id
   public_security_group_ids        = [module.sg.vpc_public_security_group_ids]
   vpc_id                           = module.networking.vpc_id
