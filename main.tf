@@ -3,13 +3,12 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-#resource "aws_secretsmanager_secret" "db_secret" {
-#  name = "db-secret"
-#}
+resource "aws_secretsmanager_secret" "db_secret" {
+  name = "db-secret"
+}
 
 data "aws_secretsmanager_secret" "db_secret" {
   name = "db-secret"
-  #arn = aws_secretsmanager_secret.db_secret.arn
 }
 
 data "aws_secretsmanager_secret_version" "db_secret_version" {

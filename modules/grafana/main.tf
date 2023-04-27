@@ -2,9 +2,15 @@ terraform {
   required_providers {
     grafana = {
       source  = "grafana/grafana"
-      version = "1.36.1"
+      version = "1.38.0"
     }
   }
+}
+
+provider "grafana" {
+  alias = "first"
+  url   = "http://${aws_instance.grafana.public_ip}:3000"
+  auth  = var.auth
 }
 
 resource "aws_instance" "grafana" {
@@ -19,12 +25,6 @@ resource "aws_instance" "grafana" {
 hostnamectl set-hostname grafana
 EOF
   ))
-}
-
-provider "grafana" {
-  alias = "first"
-  url   = "http://${aws_instance.grafana.public_ip}:3000"
-  auth  = var.auth
 }
 
 resource "grafana_data_source" "test_data_source" {
