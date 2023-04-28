@@ -7,14 +7,24 @@
 #   is_default = true
 #}
 resource "grafana_folder" "test_folder" {
-  # provider = grafana.first
-
   title = "Test Folder"
 }
 
-# resource "grafana_dashboard" "dashboard" {
-#   # provider = grafana.first
+resource "grafana_dashboard" "dashboard" {
+  config_json = file("${path.module}/dashboard.json")
+  folder      = grafana_folder.test_folder.id
+}
 
-#   config_json = file("${path.module}/dashboard.json")
-#   folder      = grafana_folder.test_folder.id
-# }
+terraform {
+  required_providers {
+    grafana = {
+      source  = "grafana/grafana"
+      version = "1.38.0"
+    }
+  }
+}
+
+provider "grafana" {
+  url  = "http://${var.grafana_public_ip}:3000"
+  auth = var.auth
+}
