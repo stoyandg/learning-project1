@@ -1,9 +1,48 @@
-variable "app-name" {}
+variable "app_name" {}
 
-variable "id_of_vpc" {}
+variable "vpc_id" {}
+
+variable "master_username" {}
 
 variable "master_password" {}
 
 variable "vpc_rds_security_group_ids" {}
 
-variable "both_db_subnets_name" {}
+variable "db_subnet_group" {
+  description = "A subnet group for the database instances"
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "A list of availability zones in which the subnets will be created"
+  type        = list(any)
+}
+
+variable "engine" {
+  description = "The engine that the database runs on"
+  type        = string
+  default     = "aurora-mysql"
+}
+
+variable "database_name" {
+  description = "The name of the database"
+  type        = string
+}
+
+variable "instance_class" {
+  description = "The instance class type for the database"
+  type        = string
+  default     = "db.t3.small"
+}
+
+variable "rds_cluster_instance_count" {
+  description = "Sets the amount of AWS RDS Cluster instances to be created."
+  type        = number
+  default     = 1
+}
+
+variable "engine_mode" {
+  description = "The mode of the engine of the database"
+  type        = string
+  default     = "provisioned"
+}

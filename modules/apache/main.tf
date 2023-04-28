@@ -1,5 +1,5 @@
-resource "aws_launch_template" "apache-template" {
-  name_prefix = "${var.app-name}-apache-template"
+resource "aws_launch_template" "apache_template" {
+  name_prefix = "${var.app_name}_apache_template"
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -13,7 +13,7 @@ resource "aws_launch_template" "apache-template" {
   vpc_security_group_ids = var.vpc_private_security_group_ids
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ec2-to-aurora-profile.name
+    name = aws_iam_instance_profile.ec2_to_aurora_profile.name
   }
 
   image_id      = "ami-0a8b8f320c122619d"
@@ -27,10 +27,10 @@ EOF
   ))
 }
 
-resource "aws_autoscaling_group" "apache-autoscaling" {
-  name = "${var.app-name}-apache-autoscaling"
+resource "aws_autoscaling_group" "apache_autoscaling" {
+  name = "${var.app_name}-apache_autoscaling"
   launch_template {
-    id = aws_launch_template.apache-template.id
+    id = aws_launch_template.apache_template.id
   }
   desired_capacity = 3
   max_size         = 3
@@ -38,8 +38,8 @@ resource "aws_autoscaling_group" "apache-autoscaling" {
 
   health_check_type = "EC2"
   target_group_arns = [
-    aws_lb_target_group.apache-lb-tg.id
+    aws_lb_target_group.lb_tg.id
   ]
 
-  vpc_zone_identifier = var.both_private_subnets_id
+  vpc_zone_identifier = var.private_subnets_id
 }

@@ -2,11 +2,14 @@ provider "aws" {
   region = local.region
 }
 
+
+
 terraform {
+  required_version = "v1.2.6"
   required_providers {
-    grafana = {
-      source  = "grafana/grafana"
-      version = "1.36.1"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.60.0"
     }
   }
 }

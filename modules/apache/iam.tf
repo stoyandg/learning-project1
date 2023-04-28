@@ -1,9 +1,9 @@
-data "aws_iam_policy" "ec2-to-aurora-policy" {
+data "aws_iam_policy" "ec2_to_aurora_policy" {
   arn = "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
 }
 
-resource "aws_iam_role" "ec2-to-aurora-role" {
-  name = "${var.app-name}-ec2-to-aurora-role"
+resource "aws_iam_role" "ec2_to_aurora_role" {
+  name = "${var.app_name}_ec2_to_aurora_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -19,12 +19,12 @@ resource "aws_iam_role" "ec2-to-aurora-role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ec2-to-aurora-policy-attachment" {
-  policy_arn = data.aws_iam_policy.ec2-to-aurora-policy.arn
-  role       = aws_iam_role.ec2-to-aurora-role.name
+resource "aws_iam_role_policy_attachment" "ec2_to_aurora_policy-attachment" {
+  policy_arn = data.aws_iam_policy.ec2_to_aurora_policy.arn
+  role       = aws_iam_role.ec2_to_aurora_role.name
 }
 
-resource "aws_iam_instance_profile" "ec2-to-aurora-profile" {
-  name = "${var.app-name}-ec2-to-aurora-profile"
-  role = aws_iam_role.ec2-to-aurora-role.name
+resource "aws_iam_instance_profile" "ec2_to_aurora_profile" {
+  name = "${var.app_name}_ec2_to_aurora_profile"
+  role = aws_iam_role.ec2_to_aurora_role.name
 }

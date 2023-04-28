@@ -1,24 +1,32 @@
-variable "prometheus_public_ip" {}
+variable "prometheus_public_ip" {
+  description = "The public IP of the Prometheus EC2 instance"
+}
 
-variable "app-name" {}
-
-variable "id_of_vpc" {}
-
-variable "vpc_grafana_security_group_ids" {}
-
-variable "both_public_subnets_id" {}
+variable "grafana_public_ip" {
+  description = "The public IP of the Grafana EC2 instance"
+}
 
 variable "auth" {
   type    = string
   default = "admin:admin"
 }
 
-variable "instance_type" {
-  type    = string
-  default = "t2.micro"
-}
+# variable "app_name" {}
 
-variable "az" {
-  type    = string
-  default = "us-west-2a"
-}
+# variable "vpc_id" {}
+
+# variable "vpc_grafana_security_group_ids" {}
+
+# variable "public_subnets_id" {}
+
+
+
+# variable "instance_type" {
+#   type    = string
+#   default = "t2.micro"
+# }
+
+# variable "az" {
+#   type    = string
+#   default = "us-west-2a"
+# }

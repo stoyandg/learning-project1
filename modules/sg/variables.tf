@@ -22,6 +22,6 @@ variable "vpc_prometheus_security_group_ids" {
   type = set(string)
 }
 
-variable "app-name" {}
+variable "app_name" {}
 
-variable "id_of_vpc" {}
+variable "vpc_id" {}

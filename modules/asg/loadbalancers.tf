@@ -1,5 +1,5 @@
 resource "aws_lb" "network_loadbalancer" {
-  count              = var.enable_network_load_balancer ? [1] : []
+  count              = var.enable_network_load_balancer ? 1 : 0
   name               = var.name
   internal           = var.internal_load_balancer
   load_balancer_type = "network"
@@ -15,19 +15,19 @@ resource "aws_lb" "network_loadbalancer" {
 }
 
 resource "aws_lb_listener" "network_loadbalancer_listener" {
-  count             = var.enable_network_load_balancer ? [1] : []
+  count             = var.enable_network_load_balancer ? 1 : 0
   load_balancer_arn = aws_lb.network_loadbalancer[0].id
   port              = var.loadbalancer_port
   protocol          = "TCP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.id
+    target_group_arn = aws_lb_target_group.target_group_nlb[0].id
   }
 }
 
 resource "aws_lb" "application_loadbalancer" {
-  count              = var.enable_application_load_balancer ? [1] : []
+  count              = var.enable_application_load_balancer ? 1 : 0
   name               = var.name
   internal           = var.internal_load_balancer
   load_balancer_type = "application"
@@ -36,18 +36,19 @@ resource "aws_lb" "application_loadbalancer" {
 }
 
 resource "aws_lb_listener" "application_loadbalancer_listener" {
-  count             = var.enable_application_load_balancer ? [1] : []
+  count             = var.enable_application_load_balancer ? 1 : 0
   load_balancer_arn = aws_lb.application_loadbalancer[0].id
   port              = var.loadbalancer_port
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.id
+    target_group_arn = aws_lb_target_group.target_group_alb[0].id
   }
 }
 
-resource "aws_lb_target_group" "target_group" {
+resource "aws_lb_target_group" "target_group_nlb" {
+  count       = var.enable_network_load_balancer ? 1 : 0
   name_prefix = var.name
   port        = var.loadbalancer_port
   protocol    = "TCP"
@@ -59,7 +60,27 @@ resource "aws_lb_target_group" "target_group" {
   }
 }
 
-resource "aws_autoscaling_attachment" "asg_attachment_bastion" {
+resource "aws_lb_target_group" "target_group_alb" {
+  count       = var.enable_application_load_balancer ? 1 : 0
+  name_prefix = var.name
+  port        = var.loadbalancer_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    port     = var.health_check_port
+    protocol = "HTTP"
+  }
+}
+
+resource "aws_autoscaling_attachment" "asg_attachment_nlb" {
+  count                  = var.enable_network_load_balancer ? 1 : 0
   autoscaling_group_name = aws_autoscaling_group.autoscaling.id
-  lb_target_group_arn    = aws_lb_target_group.target_group.arn
+  lb_target_group_arn    = aws_lb_target_group.target_group_nlb[0].arn
+}
+
+resource "aws_autoscaling_attachment" "asg_attachment_alb" {
+  count                  = var.enable_application_load_balancer ? 1 : 0
+  autoscaling_group_name = aws_autoscaling_group.autoscaling.id
+  lb_target_group_arn    = aws_lb_target_group.target_group_alb[0].arn
 }
