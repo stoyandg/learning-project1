@@ -118,5 +118,5 @@ module "grafana_dashboard" {
   prometheus_public_ip           = module.prometheus.ec2_instance_public_ip
   grafana_public_ip              = module.grafana.ec2_instance_public_ip
 
-  depends_on = [module.grafana]
+  depends_on                     = [module.grafana]
 }
