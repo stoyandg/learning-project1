@@ -87,20 +87,36 @@ module "sg" {
 }
 
 module "prometheus" {
-  source = "./modules/prometheus"
-
+  source = "./modules/ec2"
+  
+  image_id                          = "ami-07165ef812e00b2a9"
+  user_data                         = "#!/bin/bash\nhostnamectl set-hostname prometheus"
   app_name                          = local.app_name
-  vpc_id                            = module.networking.vpc_id
+  key_name                          = local.ssh_key_name
+  private_ip                        = "10.0.1.10"
   public_subnets_id                 = module.networking.public_subnets_id
   vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
+  vpc_grafana_security_group_ids    = [module.sg.vpc_grafana_security_group_ids]
 }
 
 module "grafana" {
-  source = "./modules/grafana"
+  source = "./modules/ec2"
 
-  prometheus_public_ip           = module.prometheus.prometheus_public_ip
+  image_id                       = "ami-04efc0b5be2a4d3ad"
+  user_data                      = "#!/bin/bash\nhostnamectl set-hostname grafana"
   app_name                       = local.app_name
-  vpc_id                         = module.networking.vpc_id
+  key_name                       = local.ssh_key_name
+  private_ip                     = "10.0.1.11"
   public_subnets_id              = module.networking.public_subnets_id
   vpc_grafana_security_group_ids = [module.sg.vpc_grafana_security_group_ids]
+  vpc_prometheus_security_group_ids = [module.sg.vpc_prometheus_security_group_ids]
+}
+
+module "grafana_dashboard" {
+  source = "./modules/grafana"
+
+  prometheus_public_ip           = module.prometheus.ec2_instance_public_ip
+  grafana_public_ip              = module.grafana.ec2_instance_public_ip
+
+  depends_on = [module.grafana]
 }
